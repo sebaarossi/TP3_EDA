@@ -1,12 +1,7 @@
-/*
---- Control de Allegro
-*/
 
-
-#include "tp2_allegro.h"
+#include "allegro.h"
 
 using namespace std;
-
 
 
 
@@ -20,7 +15,7 @@ bool init_allegro(allegro_t * allegro_p)
 	allegro_p->display = NULL;           //Puntero a display
 	allegro_p->event_queue = NULL;   //Puntero a cola de eventos
 	allegro_p->timer = NULL;                //puntero a timer
-	allegro_p->cleaner_robot = NULL;        //Puntero a imagen
+	allegro_p->image = NULL;        //Puntero a imagen
 	allegro_p->font = NULL;
 
 
@@ -91,9 +86,9 @@ bool init_allegro(allegro_t * allegro_p)
 
 
 	//Inicializo puntero de imagenes a imagenes correspondientes
-	allegro_p->cleaner_robot = al_load_bitmap("robot_cleaner.png"); //Led apagado
+	allegro_p->image = al_load_bitmap("robot_cleaner.png"); //Led apagado
 
-	if (!allegro_p->cleaner_robot) //pregunto si imagen se inicializo correctamente
+	if (!allegro_p->image) //pregunto si imagen se inicializo correctamente
 	{
 		fprintf(stderr, "failed to load image !\n");
 		al_destroy_timer(allegro_p->timer);
@@ -107,7 +102,7 @@ bool init_allegro(allegro_t * allegro_p)
 	allegro_p->display = al_create_display(SCREEN_W, SCREEN_H); // Inicializo display 800*600
 	if (!allegro_p->display)  //pregunto si display se inicializo correctamente
 	{
-		al_destroy_bitmap(allegro_p->cleaner_robot); //Si falla cierro todo lo que se inicializo
+		al_destroy_bitmap(allegro_p->image); //Si falla cierro todo lo que se inicializo
 		al_destroy_timer(allegro_p->timer);
 		fprintf(stderr, "failed to create display!\n");
 		return 1;
@@ -121,7 +116,7 @@ bool init_allegro(allegro_t * allegro_p)
 
 	if (!allegro_p->event_queue)  //pregunto si cola de eventos se inicializo correctamente
 	{
-		al_destroy_bitmap(allegro_p->cleaner_robot); //Si falla cierro todo lo que se inicializo
+		al_destroy_bitmap(allegro_p->image); //Si falla cierro todo lo que se inicializo
 		al_destroy_display(allegro_p->display);
 		al_destroy_timer(allegro_p->timer);
 		fprintf(stderr, "failed to create event_queue!\n");
@@ -191,7 +186,7 @@ recibe: float posicion en x
 		float tamaño de baldosa
 devuelve: nada
 */
-void Set_robot(float x, float y, float angle, allegro_t * allegro_p, float size_floor)
+void Set_image(float x, float y, float angle, allegro_t * allegro_p, float size_floor)
 {
 
 	//al_draw_scaled_rotated_bitmap(allegro_p->cleaner_robot,0, 0, x*size_floor,y*size_floor, 0.001*size_floor, 0.001*size_floor,angle, 0);

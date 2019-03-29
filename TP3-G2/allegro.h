@@ -30,17 +30,14 @@ typedef struct
 	ALLEGRO_DISPLAY * display;           //Puntero a display
 	ALLEGRO_EVENT_QUEUE * event_queue;   //Puntero a cola de eventos
 	ALLEGRO_TIMER * timer;                //puntero a timer
-	ALLEGRO_BITMAP  * cleaner_robot;        //Puntero a imagen
-	ALLEGRO_FONT *font;
+	ALLEGRO_BITMAP  * image;        //Puntero a imagen
+	ALLEGRO_FONT * font;
 
 }allegro_t;
 
 
 bool init_allegro(allegro_t*);			//inicializa allegro
-void Create_dirty_floor(int col, int fil, float size_floor); //coloca todos los pisos sucios. recibe columna y fila.
-void Clean_floor(int x, int y, float);
-void Set_robot(float x, float y, float angle, allegro_t * allegro_p, float size_floor);
+void Set_image(float x, float y, float angle, allegro_t * allegro_p, float size_floor);
 int Select_mode(int fil, int col, allegro_t*);
-void al_ShowTickCount(int tickcount, allegro_t* allegro_p);
 void al_show_graph(double * indexTicks, int Nmax);
 double MaxValue(double * indexTicks, int Nmax);
