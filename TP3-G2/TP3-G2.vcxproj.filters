@@ -24,6 +24,9 @@
     <ClCompile Include="bird.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ParseCmdLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allegro.h">
@@ -32,5 +35,11 @@
     <ClInclude Include="bird.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ParseCmdLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
