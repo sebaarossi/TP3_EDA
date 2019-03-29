@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 
 tweety :: project (tweety * birds, int bird_count,double rand_jiggle_limit, double eyesight)
 {
