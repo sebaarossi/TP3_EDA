@@ -22,6 +22,23 @@
 #define THICKNESS_LINE 1.5
 
 
+//COLORES//
+#define BLACK al_map_rgb(0,0,0)
+#define WHITE al_map_rgb(255,255,255)
+#define LIGHT_GRAY al_map_rgb(224,224,224)
+#define GRAY al_map_rgb(128,128,128)
+#define DARK_GRAY al_map_rgb(64,64,64)
+#define RED al_map_rgb(255,0,0)
+#define PINK al_map_rgb(255,96,208)
+#define PURPLE al_map_rgb(160,32,255)
+#define LIGHT_BLUE al_map_rgb(80,208,255)
+#define BLUE al_map_rgb(0,32,255)
+#define LIGHT_GREEN al_map_rgb(96,255,128)
+#define GREEN al_map_rgb(0,192,0)
+#define YELLOW al_map_rgb(255,224,32)
+#define ORANGE al_map_rgb(255,160,16)
+#define BROWN al_map_rgb(160,128,96)
+#define PALE_PINK al_map_rgb(255,208,160)
 
 
 
@@ -37,7 +54,5 @@ typedef struct
 
 
 bool init_allegro(allegro_t*);			//inicializa allegro
-void Set_image(float x, float y, float angle, allegro_t * allegro_p, float size_floor);
-int Select_mode(int fil, int col, allegro_t*);
-void al_show_graph(double * indexTicks, int Nmax);
-double MaxValue(double * indexTicks, int Nmax);
+void Al_set_image(float x, float y, float angle, allegro_t * allegro_p);
+void Al_set_background(allegro_t*);
