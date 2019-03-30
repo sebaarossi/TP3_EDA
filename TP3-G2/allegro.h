@@ -46,6 +46,7 @@ typedef struct
 {
 	ALLEGRO_DISPLAY * display;           //Puntero a display
 	ALLEGRO_EVENT_QUEUE * event_queue;   //Puntero a cola de eventos
+	ALLEGRO_EVENT  ev;
 	ALLEGRO_TIMER * timer;                //puntero a timer
 	ALLEGRO_BITMAP  * image;        //Puntero a imagen
 	ALLEGRO_FONT * font;
@@ -54,5 +55,32 @@ typedef struct
 
 
 bool init_allegro(allegro_t*);			//inicializa allegro
+
+/*
+------ Al_set_image -------
+coloca una imagen en la posicion del display que se le indique
+recibe: float  coordenada x
+		float  coordenada y
+		float  angulo de rotacion
+		allegro_t*  puntero a una estructura de allegro
+devuelve nada.
+*/
 void Al_set_image(float x, float y, float angle, allegro_t * allegro_p);
+
+
+/*
+------ Al_set_background -------
+coloca una imagen de fondo
+recibe:	allegro_t*  puntero a una estructura de allegro
+devuelve nada
+*/
 void Al_set_background(allegro_t*);
+
+/*
+------ Al_set_background -------
+indica si se presiono una tecla
+
+recibe:	allegro_t*  puntero a una estructura de allegro
+devuelve: char de tecla presionada
+*/
+char Al_askforbutton(allegro_t* allegro_p);

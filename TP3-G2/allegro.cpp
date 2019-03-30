@@ -1,11 +1,11 @@
-
+#include<iostream>
 #include "allegro.h"
+
+
+#define ASCII_CONSTANT 96
 
 using namespace std;
 
-
-
-void Colocate_grid(int col, int fil, float size_floor);
 
 
 
@@ -144,5 +144,34 @@ void Al_set_image(float x, float y, float angle, allegro_t * allegro_p)
 void Al_set_background(allegro_t* allegro_p)
 {
 	al_draw_scaled_bitmap(allegro_p->image, 0, 0, 770, 420, 0, 0, SCREEN_W, SCREEN_H, 0);
+	al_flip_display();
 	return;
+}
+
+
+
+/*
+-Al_askforbutton
+
+
+
+
+
+*/
+
+
+char Al_askforbutton(allegro_t* allegro_p)
+{
+	al_rest(3.0);
+	al_register_event_source(allegro_p->event_queue, al_get_keyboard_event_source());	//Registramos el teclado
+	if (al_get_next_event(allegro_p->event_queue, &allegro_p->ev))											//Toma un evento de la cola
+	{
+		if (allegro_p->ev.type == ALLEGRO_EVENT_KEY_DOWN)								//si detecto que se presiono una tecla
+		{
+			return (char)(allegro_p->ev.keyboard.keycode)+ASCII_CONSTANT;
+		}
+	}
+
+
+	return -1;
 }
