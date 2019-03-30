@@ -1,0 +1,3 @@
+﻿  main.cpp
+c:\users\fran\source\repos\sebaarossi\tp3_eda\tp3-g2\main.cpp(26): warning C4101: 'parseCmdLine_Return': unreferenced local variable
+  TP3-G2.vcxproj -> C:\Users\Fran\source\repos\sebaarossi\TP3_EDA\TP3-G2\Debug\TP3-G2.exe
