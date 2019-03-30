@@ -8,8 +8,9 @@
 #define MAX_ARGS 3
 
 using namespace std;
+int parseCallback(const char *key, const char *value, void *UserData);
 
-int main(int argc, char *argv[])
+int main(int argc,const char **argv)
 {
 	// inicializcion allegro
 	allegro_t Allegro;						//instancia de estructura Allegro
