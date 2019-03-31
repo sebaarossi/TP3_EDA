@@ -78,7 +78,7 @@ devuelve nada
 void Al_set_background(allegro_t*);
 
 /*
------- Al_set_background -------
+------ Al_askforbutton -------
 indica si se presiono una tecla
 
 recibe:	allegro_t*  puntero a una estructura de allegro

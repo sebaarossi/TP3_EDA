@@ -45,7 +45,7 @@ int main(int argc, const char **argv)
 	for (int i = 0; i < UserData[Nbirds]; i++)   //le asigno valores random a los pajaros
 	{
 		birds[i].randomize(SCREEN_W,SCREEN_H);
-		birds[i].set_speed(RandomValue(1.0, 2.0));
+		birds[i].set_speed(1.5);
 	}
 
 	char tecla = NULL;
@@ -64,6 +64,22 @@ int main(int argc, const char **argv)
 			break;
 
 		case 's': UserData[Eyesight] -= 1; //si fue s bajo el Eyesight
+			break;
+
+		case '1':
+			for (int i = 0; i < UserData[Nbirds]; i++)   //le asigno valores random a los pajaros
+			{
+			birds[i].randomize(SCREEN_W,SCREEN_H);
+			birds[i].set_speed(1.5);
+			}
+			break;
+		
+		case '2':
+			for (int i = 0; i < UserData[Nbirds]; i++)   //le asigno valores random a los pajaros
+			{
+			birds[i].randomize(SCREEN_W,SCREEN_H);
+			birds[i].set_speed(RandomValue(0.5, 3.0));
+			}
 			break;
 		default: break;
 		}
@@ -120,7 +136,7 @@ int parseCallback(const char *key, const char *value, void *UserData)
 	if (key == NULL)
 	{
 		//Guardar value en UserData, ya que lo que ingreso
-		//es un parámetro
+		//es un parï¿½metro
 		return 1;	//Interpretacion correcta
 	}
 	if (key != NULL && value != NULL && (*value) != '-')
