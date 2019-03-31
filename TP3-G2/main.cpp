@@ -34,7 +34,7 @@ int main(int argc, const char **argv)
 		return 0;
 	}
 	UserData[Nbirds] = 400; // <-- int con cantidad de pajaros
-	UserData[RandomJiggleLimit] = 1;
+	UserData[RandomJiggleLimit] = 0.1;
 	UserData[Eyesight] = 20;
 
 
