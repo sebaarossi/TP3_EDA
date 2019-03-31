@@ -6,7 +6,7 @@ void Bird::randomize(double maxwidth, double maxheight)
 {
 	setX(RandomValue(0,maxwidth));
 	setY(RandomValue(0, maxheight));
-	set_angle(RandomValue(0, 2*3.14));
+	set_angle(RandomValue(0,2*M_PI));
 	return;
 }
 
@@ -65,8 +65,8 @@ void Bird::set_angle(double c)
 void Bird::new_xy(int maxX, int maxY)
 {
 	
-	double a = x + speed*cos(angle);		//sumandole a la posicion inicial el coseno y el seno del angulo (para las coordenadas 
-	double b = y + speed*sin(angle);		//...X e Y, respectivamente) consigo la siguiente posicion del pajaro segun su angulo
+	double a = x + speed*cos(new_angle);		//sumandole a la posicion inicial el coseno y el seno del angulo (para las coordenadas 
+	double b = y + speed*sin(new_angle);		//...X e Y, respectivamente) consigo la siguiente posicion del pajaro segun su angulo
 
 	if (a >= maxX)	//si se pasa del limite
 	{
@@ -142,7 +142,7 @@ void Bird::pre_move(Bird* birds, int bird_count, double rand_jiggle_limit, doubl
 	}
 	if (divider != 0)
 	{
-		new_angle = (angleSum + RandomValue(0, rand_jiggle_limit))/divider;
+		new_angle = ((angleSum+angle)/(divider+1)) + RandomValue(0,rand_jiggle_limit)*M_PI/180;
 	}
 	else
 	{
