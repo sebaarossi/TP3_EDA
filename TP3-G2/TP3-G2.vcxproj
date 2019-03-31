@@ -131,11 +131,13 @@
     <ClCompile Include="allegro.cpp" />
     <ClCompile Include="bird.cpp" />
     <ClCompile Include="ParseCmdLine.cpp" />
+    <ClCompile Include="random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allegro.h" />
     <ClInclude Include="bird.h" />
     <ClInclude Include="ParseCmdLine.h" />
+    <ClInclude Include="random.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

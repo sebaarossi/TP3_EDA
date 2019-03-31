@@ -6,47 +6,112 @@
 #define OK	0
 #define MAXBIRD 5000
 #define MAX_ARGS 3
+#define ESC -101
 
 using namespace std;
 int parseCallback(const char *key, const char *value, void *UserData);
+void Draw_birds(Bird * birds, allegro_t* allegro_p, int Nbirds);
 
-int main(int argc,const char **argv)
+int main(int argc, const char **argv)
 {
+	srand(time(NULL));
+
+
 	// inicializcion allegro
 	allegro_t Allegro;						//instancia de estructura Allegro
 	allegro_t * allegro_p = &Allegro;		//Creo puntero a la estructura de Allegro
 	init_allegro(allegro_p);				//Inicializo allegro
-	
+
 
 
 	//parsecmdline
-	enum opciones {Nbirds,Eyesight,RandomJiggleLimit};
+	enum opciones { Nbirds, Eyesight, RandomJiggleLimit };
 
-	int		UserData[MAX_ARGS];			//Arreglo de int donde se guardan las opciones
-	int		parseCmdLine_Return;		//Variable que almacena el retorno de parseCmdLine
-
+	float	UserData[MAX_ARGS];			//Arreglo de int donde se guardan las opciones
+	
 	if (parseCmdLine(argc, argv, parseCallback, &UserData) == -1)	//Invoco al parse y almaceno su retorno
 	{
 		printf("Ingreso mal los parametros fila, col, robots, modo");
 		return 0;
 	}
-	UserData[Nbirds]; // <-- int con cantidad de pajaros
+	UserData[Nbirds] = 50; // <-- int con cantidad de pajaros
+	UserData[RandomJiggleLimit] = 10;
+	UserData[Eyesight] = 0.5;
 
 
 
 	// Programa simulacion de pajaros
+	Bird * birds = new Bird[UserData[Nbirds]];  //inicializo cantidad de pajaros
+
+	for (int i = 0; i < UserData[Nbirds]; i++)
+	{
+		birds[i].randomize(SCREEN_W,SCREEN_H);
+	}
+
+	char tecla = NULL;
+	
+	while (tecla != ESC)
+	{
+		switch (tecla)
+		{
+		case 'q': UserData[RandomJiggleLimit] += 1;
+			break;
+
+		case 'a': UserData[RandomJiggleLimit] -= 1;
+			break;
+
+		case 'w': UserData[Eyesight] += 1;
+			break;
+
+		case 's': UserData[Eyesight] -= 1;
+			break;
+		default: break;
+		}
+
+		for (int i = 0; i < UserData[Nbirds]; i++)
+		{
+			birds[i].pre_move(birds,UserData[Nbirds],UserData[RandomJiggleLimit],UserData[Eyesight], SCREEN_W, SCREEN_H);
+		}
 
 
+		for (int i = 0; i < UserData[Nbirds]; i++)
+		{
+			birds[i].move_birds();
+		}
 
+		Draw_birds(birds, allegro_p, UserData[Nbirds]);
+		al_rest(0.005);
+		tecla = Al_askforbutton(allegro_p);
 
+	}
 
-	Al_set_background(allegro_p);			//Coloco fondo (paisaje)
-	printf("%c", Al_askforbutton(allegro_p)); //tecla
-	al_rest(3.0); //delay
+	delete[] birds;
+	al_destroy_display(Allegro.display);
+	al_destroy_bitmap(Allegro.image);
+	al_destroy_event_queue(Allegro.event_queue);
+	al_destroy_timer(Allegro.timer);
+	//al_destroy_font(Allegro.font);
 	return OK;
 }
 
+void show_data(int Nbirds, int Eyesight, int RandomJiggleLimit)
+{
 
+
+}
+
+
+
+void Draw_birds(Bird * birds, allegro_t * allegro_p, int Nbirds)
+{
+	Al_set_background(allegro_p);			//Coloco fondo (paisaje)
+	for (int i = 0; i < Nbirds; i++)
+	{
+		Al_set_image(birds[i].getX(), birds[i].getY(), birds[i].get_angle()+5, allegro_p);
+	}
+	al_flip_display();
+	return;
+}
 
 
 int parseCallback(const char *key, const char *value, void *UserData)
