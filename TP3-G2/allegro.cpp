@@ -146,7 +146,7 @@ devuelve: nada
 */
 void Al_set_image(const float x,const float y,const float angle, allegro_t * allegro_p)
 {
-	al_draw_scaled_rotated_bitmap(allegro_p->image2,0, 0,x,y, 0.05, 0.05,angle, 0);
+	al_draw_scaled_rotated_bitmap(allegro_p->image2,0, 0,x,y, 0.03, 0.03,angle, 0);
 	//al_draw_filled_circle(x, y, 4, BLACK);
 	return;
 }

@@ -34,9 +34,9 @@ int main(int argc, const char **argv)
 		printf("Ingreso mal los parametros fila, col, robots, modo");
 		return 0;
 	}
-	UserData[Nbirds] = 50; // <-- int con cantidad de pajaros
+	UserData[Nbirds] = 40; // <-- int con cantidad de pajaros
 	UserData[RandomJiggleLimit] = 10;
-	UserData[Eyesight] = 0.5;
+	UserData[Eyesight] = 40;
 
 
 
