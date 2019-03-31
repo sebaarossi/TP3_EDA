@@ -16,8 +16,8 @@
 
 
 #define FPS			60.0 //cantidad de cuadros por segundo que se mostrara en pantalla
-#define SCREEN_W		1000
-#define SCREEN_H		700
+#define SCREEN_W		770
+#define SCREEN_H		420
 #define QUIT    'q'
 #define THICKNESS_LINE 1.5
 
@@ -49,6 +49,7 @@ typedef struct
 	ALLEGRO_EVENT  ev;
 	ALLEGRO_TIMER * timer;                //puntero a timer
 	ALLEGRO_BITMAP  * image;        //Puntero a imagen
+	ALLEGRO_BITMAP * image2;
 	ALLEGRO_FONT * font;
 
 }allegro_t;
@@ -65,7 +66,7 @@ recibe: float  coordenada x
 		allegro_t*  puntero a una estructura de allegro
 devuelve nada.
 */
-void Al_set_image(float x, float y, float angle, allegro_t * allegro_p);
+void Al_set_image(const float x,const float y,const float angle, allegro_t * allegro_p);
 
 
 /*

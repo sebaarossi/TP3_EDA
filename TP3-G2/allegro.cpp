@@ -16,6 +16,7 @@ bool init_allegro(allegro_t * allegro_p)
 	allegro_p->event_queue = NULL;   //Puntero a cola de eventos
 	allegro_p->timer = NULL;                //puntero a timer
 	allegro_p->image = NULL;        //Puntero a imagen
+	allegro_p->image2 = NULL;
 
 
 	if (!al_init())  //Inicializo allegro
@@ -87,6 +88,15 @@ bool init_allegro(allegro_t * allegro_p)
 		return 1;
 	}
 
+	//Inicializo puntero de imagenes a imagenes correspondientes
+	allegro_p->image2 = al_load_bitmap("bird.png"); //cargo imagen
+
+	if (!allegro_p->image2) //pregunto si imagen se inicializo correctamente
+	{
+		fprintf(stderr, "failed to load image !\n");
+		al_destroy_timer(allegro_p->timer);
+		return 1;
+	}
 
 
 	allegro_p->display = al_create_display(SCREEN_W, SCREEN_H);		// Inicializo display 800*600
@@ -134,17 +144,16 @@ recibe: float posicion en x
 		float 
 devuelve: nada
 */
-void Al_set_image(float x, float y, float angle, allegro_t * allegro_p)
+void Al_set_image(const float x,const float y,const float angle, allegro_t * allegro_p)
 {
-	//al_draw_scaled_rotated_bitmap(allegro_p->cleaner_robot,0, 0, x*size_floor,y*size_floor, 0.001*size_floor, 0.001*size_floor,angle, 0);
-	al_draw_filled_circle(x, y, 0.3, al_map_rgb(140, 210, 50));
+	al_draw_scaled_rotated_bitmap(allegro_p->image2,0, 0,x,y, 0.03, 0.03,angle, 0);
+	//al_draw_filled_circle(x, y, 4, BLACK);
 	return;
 }
 
 void Al_set_background(allegro_t* allegro_p)
 {
 	al_draw_scaled_bitmap(allegro_p->image, 0, 0, 770, 420, 0, 0, SCREEN_W, SCREEN_H, 0);
-	al_flip_display();
 	return;
 }
 
@@ -162,7 +171,6 @@ void Al_set_background(allegro_t* allegro_p)
 
 char Al_askforbutton(allegro_t* allegro_p)
 {
-	al_rest(3.0);
 	al_register_event_source(allegro_p->event_queue, al_get_keyboard_event_source());	//Registramos el teclado
 	if (al_get_next_event(allegro_p->event_queue, &allegro_p->ev))											//Toma un evento de la cola
 	{
