@@ -87,7 +87,7 @@ void Bird::new_xy(int maxX, int maxY)
 
 	newX = a;		//defino nueva posicion X
 	newY = b;		//defino nueva posicion Y
-	return;	//Devuelvo true indicando que hubo movimiento
+	return;	
 	
 }
 /*MODO 2*/
@@ -133,7 +133,7 @@ void Bird::pre_move(Bird* birds, int bird_count, double rand_jiggle_limit, doubl
 	{
 		if (sqrt(pow(birds[i].x - x, 2) + pow(birds[i].y - y, 2)) != 0)
 		{
-			if (sqrt(pow(birds[i].x - x, 2) + pow(birds[i].y - y, 2)) < eyesight ? 1 : 0)
+			if (sqrt(pow(birds[i].x - x, 2) + pow(birds[i].y - y, 2)) < eyesight)
 			{
 				angleSum += birds[i].angle;
 				divider++;
@@ -142,7 +142,7 @@ void Bird::pre_move(Bird* birds, int bird_count, double rand_jiggle_limit, doubl
 	}
 	if (divider != 0)
 	{
-		new_angle = ((angleSum+angle)/(divider+1)) + RandomValue(0,rand_jiggle_limit)*M_PI/180;
+		new_angle = ((angleSum+angle)/(divider+1)) + (RandomSign()*(RandomValue(0,rand_jiggle_limit)*(M_PI/180)));
 	}
 	else
 	{

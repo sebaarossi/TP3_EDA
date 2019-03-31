@@ -33,9 +33,9 @@ int main(int argc, const char **argv)
 		printf("Ingreso mal los parametros fila, col, robots, modo");
 		return 0;
 	}
-	UserData[Nbirds] = 400; // <-- int con cantidad de pajaros
-	UserData[RandomJiggleLimit] = 0.1;
-	UserData[Eyesight] = 20;
+	UserData[Nbirds] = 100; // <-- int con cantidad de pajaros
+	UserData[RandomJiggleLimit] = 2;
+	UserData[Eyesight] = 50;
 
 
 
@@ -45,6 +45,7 @@ int main(int argc, const char **argv)
 	for (int i = 0; i < UserData[Nbirds]; i++)   //le asigno valores random a los pajaros
 	{
 		birds[i].randomize(SCREEN_W,SCREEN_H);
+		birds[i].set_speed(RandomValue(1.0, 2.0));
 	}
 
 	char tecla = NULL;
@@ -53,10 +54,10 @@ int main(int argc, const char **argv)
 	{
 		switch (tecla)	//evaluo si se presiono una tecla
 		{
-		case 'q': UserData[RandomJiggleLimit] += 1; //si fue q aumento JiggleLimit
+		case 'q': UserData[RandomJiggleLimit] += 0.1; //si fue q aumento JiggleLimit
 			break;
 
-		case 'a': UserData[RandomJiggleLimit] -= 1; //si fue a bajo Jiggle Limit
+		case 'a': UserData[RandomJiggleLimit] -= 0.1; //si fue a bajo Jiggle Limit
 			break;
 
 		case 'w': UserData[Eyesight] += 1;	//si fue w aumento Eyesight
@@ -78,6 +79,7 @@ int main(int argc, const char **argv)
 			birds[i].move_birds();
 		}
 
+		cout << UserData[RandomJiggleLimit] << UserData[Eyesight]<< endl;
 		Draw_birds(birds, allegro_p, UserData[Nbirds]); //dibujo todos los pajaros con ALlegro
 		al_rest(0.005); //delay
 		tecla = Al_askforbutton(allegro_p); // guardo si se presiono una tecla
