@@ -38,13 +38,6 @@ int main(int argc, const char **argv)
 		printf("Ingreso mal los parametros");
 		return 1;
 	}
-
-
-
-	
-	UserData[Nbirds] = 100; // <-- int con cantidad de pajaros
-	UserData[RandomJiggleLimit] = 5;
-	UserData[Eyesight] = 30;
 	
 
 	for (int i = 0; i < MAX_ARGS; i++)	//verifico que se hayan cargado todos los argumentos necesarios
