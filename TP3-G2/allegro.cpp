@@ -14,7 +14,6 @@ bool init_allegro(allegro_t * allegro_p)
 
 	allegro_p->display = NULL;           //Puntero a display
 	allegro_p->event_queue = NULL;   //Puntero a cola de eventos
-	allegro_p->timer = NULL;                //puntero a timer
 	allegro_p->image = NULL;        //Puntero a imagen
 	allegro_p->image2 = NULL;
 
@@ -24,16 +23,6 @@ bool init_allegro(allegro_t * allegro_p)
 		fprintf(stderr, "failed to initialize allegro!\n");
 		return 1;
 	}
-
-
-
-	if (!al_install_mouse())  //Inicializo allegro
-	{ //Primera funcion a llamar antes de empezar a usar allegro.
-		fprintf(stderr, "failed to initialize allegro!\n");
-		return 1;
-	}
-
-
 
 	if (!al_init_font_addon()) //inicializo fuentes 
 	{
@@ -46,33 +35,31 @@ bool init_allegro(allegro_t * allegro_p)
 		return 1;
 	}
 
+	allegro_p->font = al_load_ttf_font("OpenSans-Bold.ttf", 15, 0); //cargo fuente
 
-	allegro_p->timer = al_create_timer(1.0 / FPS); //timer para actualizacion de pantalla
-	if (!allegro_p->timer)
-	{
-		fprintf(stderr, "failed to create timer!\n");
-		return 1;
+	if (!allegro_p->font) { //si falla lo aviso
+		fprintf(stderr, "Could not load 'OpenSans-Bold.ttf'.\n");
+		return 0;
 	}
-
 
 	if (!al_init_image_addon())
 	{   // ADDON necesario para manejo(no olvidar el freno de mano) de imagenes 
 		fprintf(stderr, "failed to initialize image addon !\n");
-		al_destroy_timer(allegro_p->timer);
+		al_destroy_font(allegro_p->font);
 		return 1;
 	}
 
 	if (!al_init_primitives_addon())
 	{   // ADDON necesario para manejo(no olvidar el freno de mano) de imagenes 
 		fprintf(stderr, "failed to initialize image addon !\n");
-		al_destroy_timer(allegro_p->timer);
+		al_destroy_font(allegro_p->font);
 		return 1;
 	}
 
 	if (!al_install_keyboard()) //Inicializo teclado
 	{
 		fprintf(stderr, "failed to initialize the keyboard!\n");
-		al_destroy_timer(allegro_p->timer);
+		al_destroy_font(allegro_p->font);
 		return 1;
 	}
 
@@ -84,7 +71,7 @@ bool init_allegro(allegro_t * allegro_p)
 	if (!allegro_p->image) //pregunto si imagen se inicializo correctamente
 	{
 		fprintf(stderr, "failed to load image !\n");
-		al_destroy_timer(allegro_p->timer);
+		al_destroy_font(allegro_p->font);
 		return 1;
 	}
 
@@ -94,7 +81,8 @@ bool init_allegro(allegro_t * allegro_p)
 	if (!allegro_p->image2) //pregunto si imagen se inicializo correctamente
 	{
 		fprintf(stderr, "failed to load image !\n");
-		al_destroy_timer(allegro_p->timer);
+		al_destroy_font(allegro_p->font);
+		al_destroy_bitmap(allegro_p->image);
 		return 1;
 	}
 
@@ -103,8 +91,9 @@ bool init_allegro(allegro_t * allegro_p)
 	
 	if (!allegro_p->display)  //pregunto si display se inicializo correctamente
 	{
-		al_destroy_bitmap(allegro_p->image); //Si falla cierro todo lo que se inicializo
-		al_destroy_timer(allegro_p->timer);
+		al_destroy_font(allegro_p->font);
+		al_destroy_bitmap(allegro_p->image);
+		al_destroy_bitmap(allegro_p->image2);
 		fprintf(stderr, "failed to create display!\n");
 		return 1;
 	}
@@ -117,15 +106,15 @@ bool init_allegro(allegro_t * allegro_p)
 
 	if (!allegro_p->event_queue)  //pregunto si cola de eventos se inicializo correctamente
 	{
-		al_destroy_bitmap(allegro_p->image); //Si falla cierro todo lo que se inicializo
+		al_destroy_font(allegro_p->font);
+		al_destroy_bitmap(allegro_p->image);
+		al_destroy_bitmap(allegro_p->image2);
 		al_destroy_display(allegro_p->display);
-		al_destroy_timer(allegro_p->timer);
 		fprintf(stderr, "failed to create event_queue!\n");
 		return 1;
 	}
 
 	al_register_event_source(allegro_p->event_queue, al_get_display_event_source(allegro_p->display));
-	al_register_event_source(allegro_p->event_queue, al_get_timer_event_source(allegro_p->timer)); //registro timer
 	al_register_event_source(allegro_p->event_queue, al_get_keyboard_event_source()); //REGISTRAMOS EL TECLADO
 
 

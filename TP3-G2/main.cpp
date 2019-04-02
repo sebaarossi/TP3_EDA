@@ -12,6 +12,8 @@
 using namespace std;
 int parseCallback(const char *key, const char *value, void *UserData);
 void Draw_birds(Bird * birds, allegro_t* allegro_p, int Nbirds);
+void ManageKeyboard(float* data, int*mode, Bird* birds, bool *info, char tecla);
+void show_data(float* data, allegro_t * allegro_p);
 
 int main(int argc, const char **argv)
 {
@@ -20,24 +22,48 @@ int main(int argc, const char **argv)
 	allegro_t Allegro;						//instancia de estructura Allegro
 	allegro_t * allegro_p = &Allegro;		//Creo puntero a la estructura de Allegro
 	init_allegro(allegro_p);				//Inicializo allegro
-	int modo = 2;
+
+
 
 
 	//parsecmdline
 	enum opciones { Nbirds, Eyesight, RandomJiggleLimit };
 
 	float	UserData[MAX_ARGS];			//Arreglo de int donde se guardan las opciones
-	
+	for (int i = 0; i < MAX_ARGS; i++)
+		UserData[i] = NULL;
+
 	if (parseCmdLine(argc, argv, parseCallback, &UserData) == -1)	//Invoco al parse y almaceno su retorno
 	{
 		printf("Ingreso mal los parametros");
-		return 0;
+		return 1;
 	}
+
+
+
 	
-	UserData[Nbirds] = 10; // <-- int con cantidad de pajaros
-	UserData[RandomJiggleLimit] = 2;
+	UserData[Nbirds] = 100; // <-- int con cantidad de pajaros
+	UserData[RandomJiggleLimit] = 5;
 	UserData[Eyesight] = 30;
 	
+
+	for (int i = 0; i < MAX_ARGS; i++)	//verifico que se hayan cargado todos los argumentos necesarios
+		if (UserData[i] == NULL)
+		{
+			printf("Falta asignar valor a una opcion: ");
+			switch (i)
+			{
+			case Nbirds: printf("Cantidad de pajaros '-b' = ? \n");
+				break;
+			case Eyesight: printf("Eyesight '-e' = ? \n");
+				break;
+			case RandomJiggleLimit: printf("RandomJiggleLimit '-r' = ? \n");
+				break;
+			}
+			return 1;
+		}
+
+
 
 
 	// Programa simulacion de pajaros
@@ -49,65 +75,15 @@ int main(int argc, const char **argv)
 	}
 
 	char tecla = NULL;
+	int modo = 1;
+	bool ShowInfo = false;
 	
 	while (tecla != ESC) //mientras no se presione la tecla escape
 	{
-		switch (tecla)	//evaluo si se presiono una tecla
-		{
-		case 'q':
-		{
-			UserData[RandomJiggleLimit] += 0.1; //si fue q aumento JiggleLimit
-			cout << "RandomJiggleLimit = " << UserData[RandomJiggleLimit] << endl;
-			break;
-		}
+		
+		ManageKeyboard(UserData, &modo, birds, &ShowInfo, tecla);
 
-		case 'a':
-		{
-			UserData[RandomJiggleLimit] -= 0.1; //si fue a bajo Jiggle Limit
-			cout << "RandomJiggleLimit = " << UserData[RandomJiggleLimit] << endl;
-			break;
-		}
-
-		case 'w':
-		{
-			UserData[Eyesight] += 1;	//si fue w aumento Eyesight
-			cout << "Eyesight = " << UserData[Eyesight] << endl;
-			break;
-		}
-
-		case 's':
-		{
-			UserData[Eyesight] -= 1; //si fue s bajo el Eyesight
-			cout << "Eyesight = " << UserData[Eyesight] << endl;
-			break;
-		}
-
-		case 'm':
-		{
-			if (modo == 2)
-			{
-				for (int i = 0; i < UserData[Nbirds]; i++)
-				{
-					birds[i].set_speed(RandomValue(0.5, 3.0));
-				}
-				modo = 1;
-			}
-			else if (modo == 1)
-			{
-				for (int i = 0; i < UserData[Nbirds]; i++)
-				{
-					birds[i].set_speed(1.5);
-				}
-				modo = 2;
-				
-			}
-			cout << "Modo " << modo << endl;
-			break;
-		}
-
-		default: break;
-		}
-
+		
 		
 		for (int i = 0; i < UserData[Nbirds]; i++) //para cada pajaro calculo su proximo movimiento
 		{
@@ -120,28 +96,119 @@ int main(int argc, const char **argv)
 			birds[i].move_birds();
 		}
 
-		Draw_birds(birds, allegro_p, UserData[Nbirds]); //dibujo todos los pajaros con ALlegro
+		Draw_birds(birds, allegro_p, UserData[Nbirds]); //dibujo todos los pajaros con Allegro
+
+		if (ShowInfo == true)
+		{
+			show_data(UserData, allegro_p);
+		}
+
 		al_rest(0.005); //delay
 		tecla = Al_askforbutton(allegro_p); // guardo si se presiono una tecla
 
 	}
 
+
+
+
 	delete[] birds; //destruyo pajaros y resto de allegro
 	al_destroy_display(Allegro.display);
 	al_destroy_bitmap(Allegro.image);
+	al_destroy_bitmap(Allegro.image2);
 	al_destroy_event_queue(Allegro.event_queue);
-	al_destroy_timer(Allegro.timer);
-	//al_destroy_font(Allegro.font);
+	al_destroy_font(Allegro.font);
+
 	return OK;
 }
 
-void show_data(int Nbirds, int Eyesight, int RandomJiggleLimit)
+
+
+
+void show_data(float* data, allegro_t * allegro_p) //Muestro en pantalla info de opciones en tiempo real
 {
+	enum opciones { Nbirds, Eyesight, RandomJiggleLimit };
+	al_draw_filled_rectangle(0, 0, 120, 3*20, WHITE);
+	al_draw_textf(allegro_p->font, BLACK, 0, 0, 0, "CantBird = %4.0f", data[Nbirds]);
+	al_draw_textf(allegro_p->font, BLACK, 0, 20, 0, "Eyesight = %3.1f", data[Eyesight]);
+	al_draw_textf(allegro_p->font, BLACK, 0, 2*20, 0, "JiggleLim = %2.1f", data[RandomJiggleLimit]);
 
 
+
+	al_flip_display();
+	return;
 }
 
+void ManageKeyboard(float* data, int*mode, Bird* birds, bool *info, char tecla)
+{
+	enum opciones { Nbirds, Eyesight, RandomJiggleLimit };
+	switch (tecla)	//evaluo si se presiono una tecla
+	{
+	case 'q':
+	{
+		data[RandomJiggleLimit] += 0.1; //si fue q aumento JiggleLimit
+		//cout << "RandomJiggleLimit = " << data[RandomJiggleLimit] << endl;
+		break;
+	}
 
+	case 'a':
+	{
+		if (data[RandomJiggleLimit] > 0)
+		{
+			data[RandomJiggleLimit] -= 0.1; //si fue a bajo Jiggle Limit
+		}
+		//cout << "RandomJiggleLimit = " << data[RandomJiggleLimit] << endl;
+		break;
+	}
+
+	case 'w':
+	{
+		data[Eyesight] += 1;	//si fue w aumento Eyesight
+		//cout << "Eyesight = " << data[Eyesight] << endl;
+		break;
+	}
+
+	case 's':
+	{
+		data[Eyesight] -= 1; //si fue s bajo el Eyesight
+		if (data[Eyesight] < 0)
+		{
+			data[Eyesight] = 0;
+		}
+		//cout << "Eyesight = " << data[Eyesight] << endl;
+		break;
+	}
+
+	case 'm':
+	{
+		if (*mode == 2)
+		{
+			for (int i = 0; i < data[Nbirds]; i++)
+			{
+				birds[i].set_speed(1.0);
+			}
+			*mode = 1;
+		}
+		else if (*mode == 1)
+		{
+			for (int i = 0; i < data[Nbirds]; i++)
+			{
+				birds[i].set_speed(RandomValue(0.5, 2.0));
+			}
+			*mode = 2;
+
+		}
+		//cout << "Modo " << *mode << endl;
+		break;
+	}
+	case 'i':
+		if (*info == false) { *info = true; }
+		else if (*info == true) { *info = false; }
+		break;
+
+	default: break;
+	}
+
+}
 
 void Draw_birds(Bird * birds, allegro_t * allegro_p, int Nbirds)
 {
@@ -172,25 +239,25 @@ int parseCallback(const char *key, const char *value, void *UserData)
 							return 0;
 						}else
 						{
-							*((int*)UserData) = (int)atoi(value);
+							*((float*)UserData) = (float)atoi(value);
 						}
 						break;
 
-			case 'e':	if ((int)atoi(value) > 100 || (int)atoi(value) <= 0)			//Eyesight  *definir maximos
+			case 'e':	if ((float)atof(value) > 100 || (float)atof(value) <= 0)			//Eyesight  *definir maximos
 						{
 							return 0;
 						}else
 						{
-							*(((int*)UserData) + 1) = (int)atoi(value);
+							*(((float*)UserData) + 1) = (float)atof(value);
 						}
 						break;
 
-			case 'r':	if ((int)atoi(value) < 0)										//RandomJiggleLimit   *definir maximos
+			case 'r':	if ((float)atof(value) < 0)										//RandomJiggleLimit   *definir maximos
 						{
 							return 0;
 						}else
 						{
-							*(((int*)UserData) + 2) = (int)atoi(value);
+							*(((float*)UserData) + 2) = (float)atof(value);
 						}
 						break;
 
