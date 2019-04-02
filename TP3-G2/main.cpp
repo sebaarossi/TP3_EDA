@@ -1,3 +1,23 @@
+/*
+Integrantes:
+	Dimas Miguel Bosch
+	Francisco Daniel Ledesma
+	Sebastian Nahuel Rossi
+
+Descripción del Programa:
+
+	El programa simula el vuelo de una bandada de aves y el recorrido que hacen.
+
+	Para ejecutarlo se debe ingresar por línea de comandos un -b seguido de
+	la cantidad de pájaros, un -e seguido del eyesight y un -r seguido 
+	del random jiggle limit. Una vez andando el programa se les puede modificar tanto
+	el eyesight con las tecla 'w' y 's', el random jiggle limit con las teclas 'q' y 'a,
+	y el modo con la tecla 'm'.
+	Para cerrar el programa basta con apretar la tela 'ESC'.
+
+*/
+
+
 #include <iostream>
 #include <time.h>
 #include "allegro.h"
